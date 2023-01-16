@@ -7,11 +7,6 @@ import readdirRecursive from 'fs-readdir-recursive'
 export * from './constants'
 
 export type LogMethods = 'log' | 'error'
-export interface LogOptions {
-  showTime?: boolean
-  message: string
-  method: LogMethods
-}
 
 /**
  * This method do console logging based on the options
@@ -30,25 +25,28 @@ export interface LogOptions {
  * logger({ showTime: true, message: 'foo', method: 'error' }) // => [Sun Jan 15 2023 14:15:50][INFO] foo
  * ```
  */
-export const logger = (options: LogOptions): void => {
-  const _options = Object.assign(
-    {
-      showTime: false,
-      message: '',
-      method: 'log'
-    },
-    options
-  )
+export const logger = ({
+  showTime = false,
+  shortTime = false,
+  message = '',
+  method = 'log'
+}: {
+  showTime?: boolean
+  shortTime?: boolean
+  message?: string
+  method?: LogMethods
+}): void => {
   let str = ''
-  str += _options.showTime ? `[${new Date().toString().slice(0, 24)}]` : ''
-  switch (_options.method) {
+  const time = new Date().toISOString()
+  str += showTime ? `[${shortTime ? time.slice(0, 10) : time}]` : ''
+  switch (method) {
     case 'log':
       // eslint-disable-next-line no-console
-      console.log(`${str}[INFO] ${_options.message.trim()}`)
+      console.log(`${str}[INFO] ${message.trim()}`)
       break
     case 'error':
       // eslint-disable-next-line no-console
-      console.error(`${str}[ERROR] ${_options.message.trim()}`)
+      console.error(`${str}[ERROR] ${message.trim()}`)
       break
     default:
       break

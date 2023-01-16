@@ -9,8 +9,7 @@
     "jsx": "preserve",
     "allowJs": true,
     "module": "esnext",
-    "target": "esnext",
-    "types": ["vitest/globals"]
+    "target": "esnext"
   },
   "include": ["src", "demo", "env.d.ts"],
   "exclude": ["dist", "docs", "node_modules"]

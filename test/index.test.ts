@@ -1,5 +1,6 @@
 import { join } from 'path'
 import readdirRecursive from 'fs-readdir-recursive'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   imageExt,
   textFileExt,
@@ -41,6 +42,11 @@ describe('Image Search', () => {
   })
 
   describe('logger', () => {
+    const shortTimeMsgRegx =
+      /^(\[\d{4}-[01]\d-[0-3]\d\])\[(ERROR|INFO)\]\s(.+?)$/
+    const longTimeMsgRegx =
+      /^\[\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)\]\[(ERROR|INFO)\]\s(.+?)$/
+
     afterEach(() => {
       vi.restoreAllMocks()
     })
@@ -64,9 +70,21 @@ describe('Image Search', () => {
       })
       expect(logSpy).toHaveBeenCalledTimes(1)
       expect(logSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          `[${new Date().toString().slice(0, 24)}][INFO] bar`
-        )
+        expect.stringMatching(longTimeMsgRegx)
+      )
+    })
+
+    it('log - with show time (short)', () => {
+      const logSpy = vi.spyOn(console, 'log')
+      logger({
+        showTime: true,
+        shortTime: true,
+        message: 'bar',
+        method: 'log'
+      })
+      expect(logSpy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.stringMatching(shortTimeMsgRegx)
       )
     })
 
@@ -91,9 +109,21 @@ describe('Image Search', () => {
       })
       expect(logSpy).toHaveBeenCalledTimes(1)
       expect(logSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          `[${new Date().toString().slice(0, 24)}][ERROR] bar`
-        )
+        expect.stringMatching(longTimeMsgRegx)
+      )
+    })
+
+    it('error - with show time (short)', () => {
+      const logSpy = vi.spyOn(console, 'error')
+      logger({
+        showTime: true,
+        shortTime: true,
+        message: 'bar',
+        method: 'error'
+      })
+      expect(logSpy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        expect.stringMatching(shortTimeMsgRegx)
       )
     })
   })
