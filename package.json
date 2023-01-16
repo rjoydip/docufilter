@@ -1,0 +1,80 @@
+{
+  "name": "document-filter",
+  "version": "0.0.1",
+  "description": "Filter document (required only name) from a nested directory",
+  "source": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "default": "./dist/index.mjs"
+  },
+  "module": "./dist/index.js",
+  "unpkg": "./dist/index.js",
+  "scripts": {
+    "prepare": "husky install && chmod ug+x .husky/*",
+    "start": "node ./dist/index.js",
+    "build": "tsup src",
+    "dev": "tsx --no-cache ./src/index.ts",
+    "dev:watch": "tsx --no-cache watch ./src/index.ts",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "doc:generate": "npx typedoc src/index.ts",
+    "doc:ui": "pnpm run doc:generate && serve docs/",
+    "lint": "eslint ./src/*.ts --max-warnings 0",
+    "lint:fix": "eslint ./src/*.ts --max-warnings 0 --fix",
+    "format": "prettier --write --cache .",
+    "clean": "rimraf dist coverage cache",
+    "all": "run-s clean typecheck format lint:fix build test test:coverage doc:generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjoydip/document-filter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rjoydip/document-filter/issues"
+  },
+  "homepage": "https://github.com/rjoydip/document-filter#readme",
+  "keywords": [],
+  "author": "rjoydip <joydip@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
+  "sideEffects": false,
+  "packageManager": "pnpm@7.3.0",
+  "dependencies": {
+    "array-intersection": "^0.1.2",
+    "fs-readdir-recursive": "^1.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "@types/fs-readdir-recursive": "^1.1.0",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "@vitest/coverage-c8": "^0.27.1",
+    "@vitest/ui": "^0.27.1",
+    "eslint": "^8.32.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.3",
+    "rimraf": "^4.0.5",
+    "serve": "^14.1.2",
+    "tsup": "^6.5.0",
+    "tsx": "^3.12.2",
+    "typedoc": "^0.23.24",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4",
+    "vitest": "^0.27.1"
+  },
+  "lint-staged": {
+    "**/*.{md,json,ts,tsx}": "prettier --write"
+  }
+}

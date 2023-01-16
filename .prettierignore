@@ -1,0 +1,12 @@
+coverage/*
+dist/*
+.cache/*
+docs/*
+node_modules/*
+LICENSE.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
+*.snap
+*.d.ts
+*.eslintrc.js
+*commitlint.config.js

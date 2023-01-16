@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "module": "esnext",
+    "target": "esnext",
+    "types": ["vitest/globals"]
+  },
+  "include": ["src", "demo", "env.d.ts"],
+  "exclude": ["dist", "docs", "node_modules"]
+}

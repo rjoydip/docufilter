@@ -1,0 +1,7 @@
+assets/shortlist/*
+assets/unzip/*
+node_modules
+coverage
+dist
+*.lock
+*-lock.json
