@@ -7,7 +7,6 @@ node_modules/*
 pnpm-lock.yaml
 pnpm-workspace.yaml
 *.snap
-*.d.ts
 *.eslintrc.js
 *.config.js
 *.config.ts
