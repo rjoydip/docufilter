@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-
 import { defineConfig } from 'vite'
 import { configDefaults } from 'vitest/config'
 

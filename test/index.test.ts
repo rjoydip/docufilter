@@ -1,44 +1,50 @@
-import { join } from 'path'
 import readdirRecursive from 'fs-readdir-recursive'
+import { mkdir } from 'fs/promises'
+import { join } from 'path'
+import rimraf from 'rimraf'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
 import {
-  imageExt,
-  textFileExt,
-  logger,
+  destinationLocation,
+  documentExt,
+  findAndCopy,
   findDuplicates,
-  textFilename,
-  getImagesNameByReadingTextFile,
-  findAndCopy
+  getDocumentNameByReadingTextFile,
+  logger,
+  sourceDirectory,
+  sourceLocation,
+  textFilename
 } from '../src/index'
 
 describe('Image Search', () => {
-  const imagesList = ['_A000.JPG', 'C000.JPG']
-  const sourceLocation = join(process.cwd(), 'mocks', 'data')
-  const unzipLocation = join(process.cwd(), 'mocks', 'data', 'unzip')
-  const shortlistLocation = join(process.cwd(), 'mocks', 'data', 'shortlist')
+  const documentList = ['_A000.jpg', 'C000.jpg']
+
+  vi.mock('../src/constants', () => ({
+    documentExt: '.jpg',
+    textFilename: 'mock_image_names.txt',
+    sourceDirectory: join(process.cwd(), '_mocks_', 'data'),
+    sourceLocation: join(process.cwd(), '_mocks_', 'data', 'unzip'),
+    destinationLocation: join(process.cwd(), '_mocks_', 'data', 'shortlist')
+  }))
 
   beforeEach(() => {
     vi.resetModules()
   })
 
-  vi.mock('./constants', () => ({
-    imageExt: '.jpg',
-    textFileExt: '.txt',
-    textFilename: 'mock_image_names',
-    sourceLocation,
-    unzipLocation,
-    shortlistLocation
-  }))
+  afterEach(async () => {
+    await rimraf(destinationLocation, {})
+    await mkdir(destinationLocation)
+  })
 
-  it('extension', () => {
-    expect(imageExt).toEqual('.JPG')
-    expect(textFileExt).toEqual('.txt')
+  it('filename & extension', () => {
+    expect(documentExt).toEqual('.jpg')
+    expect(textFilename).toEqual('mock_image_names.txt')
   })
 
   it('directory', () => {
-    expect(sourceLocation).toContain('data')
-    expect(unzipLocation).toContain('unzip')
-    expect(shortlistLocation).toContain('shortlist')
+    expect(sourceDirectory).toContain('data')
+    expect(sourceLocation).toContain('unzip')
+    expect(destinationLocation).toContain('shortlist')
   })
 
   describe('logger', () => {
@@ -51,78 +57,80 @@ describe('Image Search', () => {
       vi.restoreAllMocks()
     })
 
-    it('log - without show time', () => {
-      const logSpy = vi.spyOn(console, 'log')
+    it('info - without show time', () => {
+      const infoSpy = vi.spyOn(console, 'info')
       logger({
         message: 'foo',
-        method: 'log'
+        method: 'info'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('[INFO] foo'))
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[INFO] foo')
+      )
     })
 
-    it('log - with show time', () => {
-      const logSpy = vi.spyOn(console, 'log')
+    it('info - with show time', () => {
+      const infoSpy = vi.spyOn(console, 'info')
       logger({
         showTime: true,
         message: 'bar',
-        method: 'log'
+        method: 'info'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
         expect.stringMatching(longTimeMsgRegx)
       )
     })
 
-    it('log - with show time (short)', () => {
-      const logSpy = vi.spyOn(console, 'log')
+    it('info - with show time (short)', () => {
+      const infoSpy = vi.spyOn(console, 'info')
       logger({
         showTime: true,
         shortTime: true,
         message: 'bar',
-        method: 'log'
+        method: 'info'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
         expect.stringMatching(shortTimeMsgRegx)
       )
     })
 
     it('error - without show time', () => {
-      const logSpy = vi.spyOn(console, 'error')
+      const infoSpy = vi.spyOn(console, 'error')
       logger({
         message: 'bar',
         method: 'error'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
         expect.stringContaining('[ERROR] bar')
       )
     })
 
     it('error - with show time', () => {
-      const logSpy = vi.spyOn(console, 'error')
+      const infoSpy = vi.spyOn(console, 'error')
       logger({
         showTime: true,
         message: 'bar',
         method: 'error'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
         expect.stringMatching(longTimeMsgRegx)
       )
     })
 
     it('error - with show time (short)', () => {
-      const logSpy = vi.spyOn(console, 'error')
+      const infoSpy = vi.spyOn(console, 'error')
       logger({
         showTime: true,
         shortTime: true,
         message: 'bar',
         method: 'error'
       })
-      expect(logSpy).toHaveBeenCalledTimes(1)
-      expect(logSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledTimes(1)
+      expect(infoSpy).toHaveBeenCalledWith(
         expect.stringMatching(shortTimeMsgRegx)
       )
     })
@@ -131,31 +139,30 @@ describe('Image Search', () => {
   it('find duplicate', () => {
     expect(findDuplicates(['a', 'b', 'a'])).toStrictEqual(['a'])
     expect(findDuplicates(['a', 'b', 'c'])).toStrictEqual([])
-    expect(findDuplicates(['a.jpg', 'b.png', 'c.png', 'a.jpg'])).toStrictEqual([
-      'a.jpg'
-    ])
+    expect(findDuplicates(['a.jpg', '_b.png', 'c.PNG', 'a.jpg'])).toStrictEqual(
+      ['a.jpg']
+    )
   })
 
-  it('getImagesNameByReadingTextFile', () => {
-    const images = getImagesNameByReadingTextFile(
-      imageExt,
-      textFileExt,
+  it('getDocumentNameByReadingTextFile', () => {
+    const images = getDocumentNameByReadingTextFile(
+      documentExt,
       textFilename,
-      sourceLocation
+      sourceDirectory
     )
     expect(images.length).toBe(2)
-    expect(images.sort()).toStrictEqual(imagesList.sort())
+    expect(images.sort()).toStrictEqual(documentList.sort())
   })
 
   it('findAndCopy', async () => {
     const status = await findAndCopy(
-      unzipLocation,
-      shortlistLocation,
-      imagesList
+      sourceLocation,
+      destinationLocation,
+      documentList
     )
     expect(status).toBeTruthy()
-    expect(readdirRecursive(shortlistLocation).sort()).toEqual(
-      imagesList.sort()
+    expect(readdirRecursive(destinationLocation).sort()).toEqual(
+      documentList.sort()
     )
   })
 })

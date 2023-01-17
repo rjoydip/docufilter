@@ -1,5 +1,5 @@
 {
-  "name": "document-filter",
+  "name": "docufilter",
   "version": "0.0.1",
   "description": "Filter document (required only name) from a nested directory",
   "source": "dist/index.js",
@@ -31,12 +31,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rjoydip/document-filter.git"
+    "url": "git+https://github.com/rjoydip/docufilter.git"
   },
   "bugs": {
-    "url": "https://github.com/rjoydip/document-filter/issues"
+    "url": "https://github.com/rjoydip/docufilter/issues"
   },
-  "homepage": "https://github.com/rjoydip/document-filter#readme",
+  "homepage": "https://github.com/rjoydip/docufilter#readme",
   "keywords": [],
   "author": "rjoydip <joydip@gmail.com>",
   "license": "MIT",
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/fs-readdir-recursive": "^1.1.0",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
