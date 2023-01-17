@@ -42,5 +42,5 @@ jobs:
       - name: Install deps
         run: pnpm i
 
-      - name: All tasks
-        run: pnpm all
+      - name: CI tasks
+        run: pnpm ci

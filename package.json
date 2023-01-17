@@ -27,7 +27,8 @@
     "lint:fix": "eslint ./src/*.ts --max-warnings 0 --fix",
     "format": "prettier --write --cache .",
     "clean": "rimraf dist coverage cache",
-    "all": "run-s clean typecheck format lint:fix build test test:coverage doc:generate"
+    "ci": "run-p dev build test",
+    "all": "run-s clean typecheck format lint:fix dev build test test:coverage doc:generate"
   },
   "repository": {
     "type": "git",
