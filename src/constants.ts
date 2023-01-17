@@ -1,6 +1,0 @@
-export const documentExt = '.JPG'
-export const textFileExt = '.txt'
-export const textFilename = 'image_names'
-export const sourceDirectory = 'assets'
-export const sourceLocation = 'assets/unzip'
-export const destinationLocation = 'assets/shortlist'

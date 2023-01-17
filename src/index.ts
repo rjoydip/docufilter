@@ -4,8 +4,6 @@ import readdirRecursive from 'fs-readdir-recursive'
 import { copyFile } from 'fs/promises'
 import { basename, join } from 'path'
 
-export * from './constants'
-
 /**
  * This method do console logging based on the options
  *

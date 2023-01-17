@@ -5,27 +5,24 @@ import rimraf from 'rimraf'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
-  destinationLocation,
-  documentExt,
   findAndCopy,
   findDuplicates,
   getDocumentNameByReadingTextFile,
-  logger,
-  sourceDirectory,
-  sourceLocation,
-  textFilename
+  logger
 } from '../src/index'
 
 describe('Image Search', () => {
   const documentList = ['_A000.jpg', 'C000.jpg']
-
-  vi.mock('../src/constants', () => ({
-    documentExt: '.jpg',
-    textFilename: 'mock_image_names.txt',
-    sourceDirectory: join(process.cwd(), '_mocks_', 'data'),
-    sourceLocation: join(process.cwd(), '_mocks_', 'data', 'unzip'),
-    destinationLocation: join(process.cwd(), '_mocks_', 'data', 'shortlist')
-  }))
+  const documentExt = '.jpg'
+  const textFilename = 'mock_image_names.txt'
+  const sourceDirectory = join(process.cwd(), '_mocks_', 'data')
+  const sourceLocation = join(process.cwd(), '_mocks_', 'data', 'unzip')
+  const destinationLocation = join(
+    process.cwd(),
+    '_mocks_',
+    'data',
+    'shortlist'
+  )
 
   beforeEach(() => {
     vi.resetModules()
