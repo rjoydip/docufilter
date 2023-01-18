@@ -1,6 +1,6 @@
 {
   "name": "docufilter",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Filter document (required only name) from a nested directory",
   "source": "dist/index.js",
   "types": "dist/index.d.ts",
