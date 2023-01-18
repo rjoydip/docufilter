@@ -5,3 +5,4 @@ coverage
 dist
 *.lock
 *-lock.json
+*.traineddata

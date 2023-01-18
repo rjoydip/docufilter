@@ -1,2 +1,3 @@
 .env
+*.traineddata
 node_modules

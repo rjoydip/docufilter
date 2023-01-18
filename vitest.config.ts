@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    update: true,
     exclude: [...configDefaults.exclude, 'dist/*', 'node_modules/*'],
     coverage: {
       all: true,

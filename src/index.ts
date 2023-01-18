@@ -3,6 +3,42 @@ import { readFileSync } from 'fs'
 import readdirRecursive from 'fs-readdir-recursive'
 import { copyFile } from 'fs/promises'
 import { basename, join } from 'path'
+import { createWorker } from 'tesseract.js'
+
+/**
+ * This method scan a image and return text. The static image file types are 'jpg', 'png'
+ *
+ * @param {string} image - Image file (it can be URL and static file)
+ * @param {string} language - Default - 'en'
+ * @param {boolean} showLog - Default - false
+ *
+ * @returns {string}
+ *
+ * @example
+ * ```ts
+ * getTextFromImage('foo.png', '/path')
+ * ```
+ */
+export const getTextFromImage = async (
+  image: string,
+  lang = 'eng',
+  showLog = false
+): Promise<string> => {
+  const worker = await createWorker({
+    // eslint-disable-next-line no-console
+    logger: (m) => (showLog ? console.log(m) : void 0)
+  })
+
+  await worker.loadLanguage(lang)
+  await worker.initialize(lang)
+
+  const {
+    data: { text }
+  } = await worker.recognize(image)
+
+  await worker.terminate()
+  return text
+}
 
 /**
  * This method gives array of elements if there are any duplicates in array. Else it'll return empty array

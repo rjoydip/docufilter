@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv'
 import { mkdir } from 'fs/promises'
-import { join, resolve } from 'path'
+import { resolve } from 'path'
 import rimraf from 'rimraf'
 
-import { findAndCopy, getDocumentNameByReadingTextFile } from '../src'
+import { findAndCopy, getDocumentNameByReadingTextFile } from '../../src'
 
 dotenv.config()
 ;(async () => {
@@ -23,6 +23,10 @@ dotenv.config()
   )
 
   await cleanup()
+  // eslint-disable-next-line no-console
+  console.log('Cleanup done')
 
   await findAndCopy(sourceLocation, destinationLocation, images)
+  // eslint-disable-next-line no-console
+  console.log('File coping done')
 })()

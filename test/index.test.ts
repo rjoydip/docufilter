@@ -4,17 +4,28 @@ import { join } from 'path'
 import rimraf from 'rimraf'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { findAndCopy, getDocumentNameByReadingTextFile } from '../src/index'
+import {
+  findAndCopy,
+  getDocumentNameByReadingTextFile,
+  getTextFromImage
+} from '../src/index'
 
-describe('Image Search', () => {
+describe('docufilter', () => {
   const documentList = ['_A000.jpg', 'C000.jpg']
   const documentExt = '.jpg'
-  const textFilename = 'mock_image_names.txt'
-  const sourceDirectory = join(process.cwd(), '_mocks_', 'data')
-  const sourceLocation = join(process.cwd(), '_mocks_', 'data', 'unzip')
+  const textFilename = 'file_names.txt'
+  const sourceDirectory = join(process.cwd(), 'test', '__fixtures__', 'data')
+  const sourceLocation = join(
+    process.cwd(),
+    'test',
+    '__fixtures__',
+    'data',
+    'unzip'
+  )
   const destinationLocation = join(
     process.cwd(),
-    '_mocks_',
+    'test',
+    '__fixtures__',
     'data',
     'shortlist'
   )
@@ -30,13 +41,47 @@ describe('Image Search', () => {
 
   it('filename & extension', () => {
     expect(documentExt).toEqual('.jpg')
-    expect(textFilename).toEqual('mock_image_names.txt')
+    expect(textFilename).toEqual('file_names.txt')
   })
 
   it('directory', () => {
     expect(sourceDirectory).toContain('data')
     expect(sourceLocation).toContain('unzip')
     expect(destinationLocation).toContain('shortlist')
+  })
+
+  describe('getTextFromImage', () => {
+    const timeout = 10000
+    const staticImagesLocation = join(
+      process.cwd(),
+      'test',
+      '__fixtures__',
+      'images'
+    )
+    it(
+      'HTTP URL',
+      async () => {
+        expect(
+          await getTextFromImage(
+            'https://tesseract.projectnaptha.com/img/eng_bw.png'
+          )
+        ).toMatchSnapshot()
+      },
+      timeout
+    )
+
+    it(
+      'static image',
+      async () => {
+        expect(
+          await getTextFromImage(join(staticImagesLocation, 'image-1.jpg'))
+        ).toMatchSnapshot()
+        expect(
+          await getTextFromImage(join(staticImagesLocation, 'image-2.png'))
+        ).toMatchSnapshot()
+      },
+      timeout
+    )
   })
 
   it('getDocumentNameByReadingTextFile', () => {

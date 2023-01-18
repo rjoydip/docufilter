@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --no-cache ./example.ts"
+    "basic": "tsx --no-cache ./basic/index.ts",
+    "image-scan": "tsx --no-cache ./image-scan/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "rjoydip",
   "license": "ISC",
   "dependencies": {
     "tsx": "^3.12.2",
