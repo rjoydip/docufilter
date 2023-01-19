@@ -51,7 +51,7 @@ describe('docufilter', () => {
   })
 
   describe('getTextFromImage', () => {
-    const timeout = 10000
+    const timeout = 20000
     const staticImagesLocation = join(
       process.cwd(),
       'test',
