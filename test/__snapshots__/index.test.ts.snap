@@ -16,3 +16,13 @@ exports[`docufilter > getTextFromImage > static image 1`] = `
 "CREATIVE MIND
 "
 `;
+
+exports[`docufilter > getTextFromImage > static image 2`] = `
+"ABCDEFGHIJKLM
+NOPQRSTUVWXYZ
+abcdefghijklm
+nopqrstuvwxyz
+0123456789!1?#
+%&$@*{(/[ )}
+"
+`;
